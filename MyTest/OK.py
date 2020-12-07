@@ -1,0 +1,1 @@
+on_draw.xxx=snow_person1_x
