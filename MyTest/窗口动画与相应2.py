@@ -51,6 +51,9 @@ class MyGame(arcade.Window):
         super().__init__(width, height, title)
         self.set_location(1900, -90)
         arcade.set_background_color(arcade.color.ASH_GREY)
+        # Make the mouse disappear when it is over the window.
+        # So we just see our object, not the pointer.
+        # self.set_mouse_visible(False)
 
         # Create a list for the balls
         self.ball_list = []
@@ -86,16 +89,28 @@ class MyGame(arcade.Window):
         # method on that ball.
         for ball in self.ball_list:
             ball.draw()
-    def on_key_press(self, symbol: int, modifiers: int):
-        self.ball_ref()
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.LEFT:
+            print("Left key hit")
+        if key == arcade.key.UP:
+            print("Up key hit")
+            # for zzball in range(0, 4):
+                #  = ball
+                # zchange_x = random.randint(1, 3)
+                # zchange_y = random.randint(1, 3)
+
+        elif key == arcade.key.SPACE:
+            print("The 'Space' key was hit")
+            self.ball_ref()
+
     def ball_ref(self):
         # self.ball_list = []
         # Add three balls to the list
         for zzball in range(0, 4):
             zx = random.randint(0, 200)
             zy = random.randint(0, 200)
-            zchange_x = random.randint(1, 20)
-            zchange_y = random.randint(1, 20)
+            zchange_x = random.randint(1, 3)
+            zchange_y = random.randint(1, 3)
             zradius = random.randint(10, 40)
             zcolor1 = random.randint(0, 255)
             zcolor2 = random.randint(0, 255)
@@ -105,6 +120,15 @@ class MyGame(arcade.Window):
                 self.ball_list.append(ball)
             else :
                 self.ball_list[zzball] =  ball
+
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        """ Called when the user presses a mouse button. """
+
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            print("Left mouse button pressed at", x, y)
+        elif button == arcade.MOUSE_BUTTON_RIGHT:
+            print("Right mouse button pressed at", x, y)
 
     def update(self, delta_time):
         """ Called to update our objects. Happens approximately 60 times per second."""
