@@ -49,23 +49,24 @@ class MyGame(arcade.Window):
 
         # Call the parent class's init function
         super().__init__(width, height, title)
+        self.set_location(1900, -90)
         arcade.set_background_color(arcade.color.ASH_GREY)
 
         # Create a list for the balls
         self.ball_list = []
-
+        self.ball_ref()
         # Add three balls to the list
-        for zball in range(1,5):
-            zx =random.randint(0,200)
-            zy = random.randint(0, 200)
-            zchange_x=random.randint(1, 50)
-            zchange_y=random.randint(1, 50)
-            zradius=random.randint(10, 40)
-            zcolor1 = random.randint(0, 255)
-            zcolor2 = random.randint(0, 255)
-            zcolor3= random.randint(0, 255)
-            ball = Ball(zx, zy, zchange_x, zchange_y, zradius, (zcolor1,zcolor2,zcolor3))
-            self.ball_list.append(ball)
+        # for zball in range(0,4):
+        #     zx =random.randint(0,200)
+        #     zy = random.randint(0, 200)
+        #     zchange_x=random.randint(1, 20)
+        #     zchange_y=random.randint(1, 20)
+        #     zradius=random.randint(10, 40)
+        #     zcolor1 = random.randint(0, 255)
+        #     zcolor2 = random.randint(0, 255)
+        #     zcolor3= random.randint(0, 255)
+        #     ball = Ball(zx, zy, zchange_x, zchange_y, zradius, (zcolor1,zcolor2,zcolor3))
+        #     self.ball_list.append(ball)
 
     # ball = Ball(50, 50, 3, 3, 15, arcade.color.AUBURN)
         # self.ball_list.append(ball)
@@ -86,7 +87,25 @@ class MyGame(arcade.Window):
         for ball in self.ball_list:
             ball.draw()
     def on_key_press(self, symbol: int, modifiers: int):
-        self.__init__(self, 640, 480, "Drawing Example")
+        self.ball_ref()
+    def ball_ref(self):
+        # self.ball_list = []
+        # Add three balls to the list
+        for zzball in range(0, 4):
+            zx = random.randint(0, 200)
+            zy = random.randint(0, 200)
+            zchange_x = random.randint(1, 20)
+            zchange_y = random.randint(1, 20)
+            zradius = random.randint(10, 40)
+            zcolor1 = random.randint(0, 255)
+            zcolor2 = random.randint(0, 255)
+            zcolor3 = random.randint(0, 255)
+            ball = Ball(zx, zy, zchange_x, zchange_y, zradius, (zcolor1, zcolor2, zcolor3))
+            if len(self.ball_list)<4:
+                self.ball_list.append(ball)
+            else :
+                self.ball_list[zzball] =  ball
+
     def update(self, delta_time):
         """ Called to update our objects. Happens approximately 60 times per second."""
 
