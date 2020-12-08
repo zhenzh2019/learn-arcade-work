@@ -60,28 +60,6 @@ class MyGame(arcade.Window):
         # Create a list for the balls
         self.ball_list = []
         self.ball_ref()
-        # Add three balls to the list
-        # for zball in range(0,4):
-        #     zx =random.randint(0,200)
-        #     zy = random.randint(0, 200)
-        #     zchange_x=random.randint(1, 20)
-        #     zchange_y=random.randint(1, 20)
-        #     zradius=random.randint(10, 40)
-        #     zcolor1 = random.randint(0, 255)
-        #     zcolor2 = random.randint(0, 255)
-        #     zcolor3= random.randint(0, 255)
-        #     ball = Ball(zx, zy, zchange_x, zchange_y, zradius, (zcolor1,zcolor2,zcolor3))
-        #     self.ball_list.append(ball)
-
-    # ball = Ball(50, 50, 3, 3, 15, arcade.color.AUBURN)
-    # self.ball_list.append(ball)
-    #
-    # ball = Ball(100, 150, 2, 3, 15, arcade.color.PURPLE_MOUNTAIN_MAJESTY)
-    # self.ball_list.append(ball)
-    #
-    # ball = Ball(150, 250, -3, -1, 15, arcade.color.FOREST_GREEN)
-    # self.ball_list.append(ball)
-    #
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
@@ -92,28 +70,14 @@ class MyGame(arcade.Window):
         for ball in self.ball_list:
             ball.draw()
 
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.LEFT:
-            print("Left key hit")
-        if key == arcade.key.UP:
-            print("Up key hit")
-            # for zzball in range(0, 4):
-            #  = ball
-            # zchange_x = random.randint(1, 3)
-            # zchange_y = random.randint(1, 3)
-
-        elif key == arcade.key.SPACE:
-            print("The 'Space' key was hit")
-            self.ball_ref()
-
     def ball_ref(self):
         # self.ball_list = []
         # Add three balls to the list
         for zzball in range(0, 4):
             zx = random.randint(0, 200)
             zy = random.randint(0, 200)
-            zchange_x = random.randint(1, 3)
-            zchange_y = random.randint(1, 3)
+            zchange_x = random.randint(1, 10)
+            zchange_y = random.randint(1, 10)
             zradius = random.randint(10, 40)
             zcolor1 = random.randint(0, 255)
             zcolor2 = random.randint(0, 255)
@@ -123,6 +87,48 @@ class MyGame(arcade.Window):
                 self.ball_list.append(ball)
             else:
                 self.ball_list[zzball] = ball
+
+    def speed_change(self, zway):
+        xx = 0
+        yy = 0
+        if zway == "u":
+            yy = 1
+        elif zway == "d":
+            yy = -1
+        elif zway == "l":
+            xx = -1
+        else:
+            xx = 1
+        for zc in range(0, 4):
+            if self.ball_list[zc].change_x != 0:
+                self.ball_list[zc].change_x = xx * self.ball_list[zc].change_x / abs(self.ball_list[zc].change_x) + \
+                                              self.ball_list[zc].change_x
+            else:
+                self.ball_list[zc].change_x = xx + self.ball_list[zc].change_x
+
+            if self.ball_list[zc].change_y != 0:
+                self.ball_list[zc].change_y = yy * self.ball_list[zc].change_y / abs(self.ball_list[zc].change_y) + \
+                                              self.ball_list[zc].change_y
+            else:
+                self.ball_list[zc].change_y = yy + self.ball_list[zc].change_y
+            print(self.ball_list[zc].change_x, self.ball_list[zc].change_y)
+
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.LEFT:
+            print("Left key hit")
+            self.speed_change("l")
+        if key == arcade.key.UP:
+            self.speed_change("u")
+            print("Up key hit")
+        if key == arcade.key.RIGHT:
+            print("Right key hit")
+            self.speed_change("r")
+        if key == arcade.key.DOWN:
+            self.speed_change("d")
+            print("Down key hit")
+        elif key == arcade.key.SPACE:
+            print("The 'Space' key was hit")
+            self.ball_ref()
 
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when the user presses a mouse button. """
