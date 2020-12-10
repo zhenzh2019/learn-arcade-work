@@ -3,7 +3,7 @@ import random
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
-
+MOVEMENT_SPEED = 3
 
 class Ball:
     """ This class manages a ball bouncing on the screen. """
@@ -60,11 +60,13 @@ class MyGame(arcade.Window):
         # Create a list for the balls
         self.ball_list = []
         self.ball_ref()
+        self.xball = Ball(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0,0,20,arcade.color.AUBURN)
+
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
         arcade.start_render()
-
+        self.xball.draw()
         # Use a "for" loop to pull each ball from the list, then call the draw
         # method on that ball.
         for ball in self.ball_list:
@@ -87,18 +89,30 @@ class MyGame(arcade.Window):
                 self.ball_list.append(ball)
             else:
                 self.ball_list[zzball] = ball
+            self.xball = Ball(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0,0,20,arcade.color.AUBURN)
 
     def speed_change(self, zway):
         xx = 0
         yy = 0
+        mxx = 0
+        myy = 0
         if zway == "u":
             yy = 1
         elif zway == "d":
             yy = -1
         elif zway == "l":
             xx = -1
-        else:
-            xx = 1
+        elif zway == "r":
+            yy = 1
+        elif zway == "a":
+            mxx = -1
+        elif zway == "w":
+            myy = 1
+        elif zway == "dd":
+            mxx = 1
+        elif zway == "s":
+            myy = -1
+
         for zc in range(0, 4):
             if self.ball_list[zc].change_x != 0:
                 self.ball_list[zc].change_x = xx * self.ball_list[zc].change_x / abs(self.ball_list[zc].change_x) + \
@@ -112,6 +126,10 @@ class MyGame(arcade.Window):
             else:
                 self.ball_list[zc].change_y = yy + self.ball_list[zc].change_y
             print(self.ball_list[zc].change_x, self.ball_list[zc].change_y)
+        print(mxx,myy)
+        self.xball.change_x= mxx * MOVEMENT_SPEED
+        self.xball.change_y= myy * MOVEMENT_SPEED
+
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.LEFT:
@@ -126,9 +144,28 @@ class MyGame(arcade.Window):
         if key == arcade.key.DOWN:
             self.speed_change("d")
             print("Down key hit")
+        if key == arcade.key.A:
+            print("A key hit")
+            self.speed_change("a")
+        if key == arcade.key.W:
+            self.speed_change("w")
+            print("W key hit")
+        if key == arcade.key.D:
+            print("D key hit")
+            self.speed_change("dd")
+        if key == arcade.key.S:
+            self.speed_change("s")
+            print("S key hit")
         elif key == arcade.key.SPACE:
             print("The 'Space' key was hit")
             self.ball_ref()
+
+    def on_key_release(self, key, modifiers):
+        """ Called whenever a user releases a key. """
+        if key == arcade.key.A or key == arcade.key.D:
+            self.xball.change_x = 0
+        elif key == arcade.key.W or key == arcade.key.S:
+            self.xball.change_y = 0
 
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when the user presses a mouse button. """
@@ -141,10 +178,12 @@ class MyGame(arcade.Window):
     def update(self, delta_time):
         """ Called to update our objects. Happens approximately 60 times per second."""
 
-        # Use a "for" loop to pull each ball from the list, then call the update
+        # # Use a "for" loop to pull each ball from the list, then call the update
         # method on that ball.
+
         for ball in self.ball_list:
             ball.update()
+        self.xball.update()
 
 
 def main():
